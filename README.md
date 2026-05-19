@@ -1,3 +1,3 @@
-# loja_musica
+# Loja de instrumentos musicais
 
-A new Flutter project.
+Um aplicativo para acessar uma api de loja de música
