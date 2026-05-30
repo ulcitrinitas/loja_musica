@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class InstrumentoService {
   static final String url = "${ApiService.baseUrl}/instrumentos";
 
-  static Future<List<Instrumento>> listarInstrumentos() async {
+  static Future<List<Instrumento>> listar() async {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -27,7 +27,7 @@ class InstrumentoService {
     throw Exception("Erro ao listar os instrumentos: ${response.statusCode}");
   }
 
-  static Future<void> inserirInstrumento(Instrumento instrumento) async {
+  static Future<void> inserir(Instrumento instrumento) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {"Content-Type": "application/json"},
@@ -41,7 +41,7 @@ class InstrumentoService {
     }
   }
 
-  static Future<void> atualizarPaciente(Instrumento instrumento) async {
+  static Future<void> atualizar(Instrumento instrumento) async {
     final response = await http.put(
       Uri.parse("$url?id=${instrumento.id}"),
       headers: {"Content-Type": "application/json"},
@@ -55,7 +55,7 @@ class InstrumentoService {
     }
   }
 
-  static Future<void> excluirPaciente(Instrumento instrumento) async {
+  static Future<void> excluir(Instrumento instrumento) async {
     final response = await http.delete(Uri.parse("$url?id=${instrumento.id}"));
 
     if (response.statusCode != 200) {
