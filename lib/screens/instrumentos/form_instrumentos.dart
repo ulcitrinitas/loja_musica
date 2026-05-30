@@ -79,10 +79,10 @@ class _FormInstrumentoState extends State<FormInstrumento> {
 
     try {
       if (widget.instrumento == null) {
-        await InstrumentoService.inserirInstrumento(instrumento);
+        await InstrumentoService.inserir(instrumento);
         if (mounted) _mostrarMsg("Instrumento Cadastrado");
       } else {
-        await InstrumentoService.atualizarPaciente(instrumento);
+        await InstrumentoService.atualizar(instrumento);
         if (mounted) _mostrarMsg("Instrumento Atualizado");
       }
     } catch (e) {
