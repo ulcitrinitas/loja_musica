@@ -49,17 +49,30 @@ class _FormInstrumentoState extends State<FormInstrumento> {
     super.dispose();
   }
 
-  double _converterPreco(String val) {
-    if (double.tryParse(val) == null) {
-      _mostrarMsg("Erro ao inserir o valor", erro: true);
-      return double.nan;
+  double? _parsePreco(String val) {
+    var texto = val.trim().replaceAll(" ", "");
+    if (texto.isEmpty) return null;
+
+    final temVirgula = texto.contains(",");
+    final temPonto = texto.contains(".");
+
+    if (temVirgula && temPonto) {
+      final ultimaVirgula = texto.lastIndexOf(",");
+      final ultimoPonto = texto.lastIndexOf(".");
+      if (ultimaVirgula > ultimoPonto) {
+        texto = texto.replaceAll(".", "").replaceAll(",", ".");
+      } else {
+        texto = texto.replaceAll(",", "");
+      }
+    } else if (temVirgula) {
+      texto = texto.replaceAll(",", ".");
     }
 
-    var valConvertido = double.parse(
-      val.replaceAll(".", "").replaceAll(",", "."),
-    );
+    return double.tryParse(texto);
+  }
 
-    return valConvertido;
+  double _converterPreco(String val) {
+    return _parsePreco(val) ?? 0.0;
   }
 
   Future<void> _salvar() async {
@@ -70,6 +83,7 @@ class _FormInstrumentoState extends State<FormInstrumento> {
     });
 
     final instrumento = Instrumento(
+      id: widget.instrumento?.id,
       nome: _nomeCtrl.text.trim(),
       preco: _converterPreco(_precoCtrl.text),
       estoque: int.parse(_estoqueCtrl.text.trim()),
@@ -111,7 +125,7 @@ class _FormInstrumentoState extends State<FormInstrumento> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(editando ? "Editar Médico" : "Novo Médico"),
+        title: Text(editando ? "Editar Instrumento" : "Novo Instrumento"),
         backgroundColor: const Color(0xFF5611E1),
         foregroundColor: const Color(0xFFE8F2F3),
       ),
@@ -137,22 +151,21 @@ class _FormInstrumentoState extends State<FormInstrumento> {
               // Campo de Preço
               TextFormField(
                 controller: _precoCtrl,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: const InputDecoration(
                   labelText: "Preço",
                   prefixIcon: Icon(Icons.currency_exchange),
                   border: OutlineInputBorder(),
                 ),
                 validator: (v) {
-                  if (v == null || v.isEmpty) {
+                  if (v == null || v.trim().isEmpty) {
                     return "Informe o preço";
                   }
-                  final precoRegex = RegExp(r'^\d{1,3}(\.\d{3})*(,\d{2})?$');
-
-                  if (!precoRegex.hasMatch(v)) {
-                    return "Formato inválido! Use: 10.40 ou 1,500.50";
+                  if (_parsePreco(v) == null) {
+                    return "Formato inválido! Use: 10, 10,5 ou 10.50";
                   }
-
                   return null;
                 },
               ),
