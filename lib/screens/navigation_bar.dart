@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loja_musica/screens/instrumentos/lista_instrumentos.dart';
 
 class NavigationBarScreen extends StatelessWidget {
   const NavigationBarScreen({super.key});
@@ -19,10 +20,15 @@ class NavigationHome extends StatefulWidget {
 class _NavigationHomeState extends State<NavigationHome> {
   int _currentIndex = 0;
 
+  // Lista de páginas — cada índice corresponde a um item do NavigationBar
+  final List<Widget> _pages = const [
+    ListaInstrumentos(),
+    ClientesPage(),
+    VendasPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -35,7 +41,7 @@ class _NavigationHomeState extends State<NavigationHome> {
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.music_video_sharp),
-            label: 'Home',
+            label: 'Instrumentos',
           ),
           NavigationDestination(icon: Icon(Icons.people), label: 'Clientes'),
           NavigationDestination(
@@ -44,12 +50,44 @@ class _NavigationHomeState extends State<NavigationHome> {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'Aba atual: $_currentIndex',
-          style: theme.textTheme.titleLarge,
-        ),
-      ),
+      // Troca o body conforme o índice selecionado
+      body: _pages[_currentIndex],
     );
+  }
+}
+
+// ─────────────────────────────────────────────
+// Página: Listar Instrumentos
+// ─────────────────────────────────────────────
+// class ListarInstrumentosPage extends StatelessWidget {
+//   const ListarInstrumentosPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Center(child: Text('Página: Listar Instrumentos'));
+//   }
+// }
+
+// ─────────────────────────────────────────────
+// Página: Clientes (placeholder)
+// ─────────────────────────────────────────────
+class ClientesPage extends StatelessWidget {
+  const ClientesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Página: Clientes (em breve)'));
+  }
+}
+
+// ─────────────────────────────────────────────
+// Página: Vendas (placeholder)
+// ─────────────────────────────────────────────
+class VendasPage extends StatelessWidget {
+  const VendasPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Página: Vendas (em breve)'));
   }
 }
