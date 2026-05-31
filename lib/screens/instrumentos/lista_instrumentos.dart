@@ -51,16 +51,16 @@ class _ListaInstrumentosState extends State<ListaInstrumentos> {
   Future<void> _excluir(Instrumento i) async {
     final confirmar = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text("Confirmar exclusão"),
         content: Text("Deseja excluir ${i.nome}"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text("Cancelar"),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text("Excluir", style: TextStyle(color: Colors.red)),
           ),
         ],
@@ -92,7 +92,7 @@ class _ListaInstrumentosState extends State<ListaInstrumentos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("medicos do hospital"),
+        title: const Text("Loja de Música"),
         backgroundColor: const Color(0xFF5611E1),
         foregroundColor: const Color(0xFFE8F2F3),
         actions: [IconButton(onPressed: _carregar, icon: Icon(Icons.refresh))],
@@ -102,7 +102,7 @@ class _ListaInstrumentosState extends State<ListaInstrumentos> {
           : _instrumentos.isEmpty
           ? const Center(
               child: Text(
-                "Nenhum medico cadastrado",
+                "Nenhum instrumento cadastrado",
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             )
@@ -123,7 +123,7 @@ class _ListaInstrumentosState extends State<ListaInstrumentos> {
                     ins.nome,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text("${ins.categoria}"),
+                  subtitle: Text(ins.categoria.nome),
                   isThreeLine: true,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
