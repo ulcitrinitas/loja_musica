@@ -6,9 +6,9 @@ class Marca {
 
   factory Marca.fromJson(Map<String, dynamic> json) {
     return Marca(
-        nome: json["nome"] ?? "", 
-        pais: json["pais"] ?? ""
-      );
+      nome: json["nome"]?.toString() ?? "",
+      pais: json["pais"]?.toString() ?? "",
+    );
   }
 
    Map<String, String> toJson(){
